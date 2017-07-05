@@ -1,0 +1,11 @@
+﻿
+=========================================================================
+
+- Lua modules now doesn't load as scripts if they are in the root folder
+- Timer module fix
+- Fixed threading error that throws when hot-reload script with "OnUpdate"
+
+TODO:
+	- Freeroam script
+	- Documentation (default libs)
+	- Convert CLR type (userdata) to table
