@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace LuaConnector.Utils
+namespace LuaConnector.Utilities
 {
 	class NameGenerator
 	{

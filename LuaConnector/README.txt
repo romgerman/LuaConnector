@@ -13,6 +13,12 @@ FORUM THREAD: https://gt-mp.net/forum/thread/122-alpha-luaconnector-%E2%80%94-wr
 
 Changelog:
 
+	[07.07.2017]
+	- Timer module fix
+	- Fixed threading error that throws when hot-reload script with "OnUpdate"
+	- Fixed exception if you pass an Entity object instead of NetHandle
+	- Other fixes
+	
 	[04.07.2017]
 	- Fixed createVehicle optional argument
 	- Added optional argument for "cmd" module

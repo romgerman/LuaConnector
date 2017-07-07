@@ -62,7 +62,7 @@ namespace LuaConnector.LuaModules
 		public string Id { get; private set; }
 		public Dictionary<string, MenuDefinition> Menus { get { return menus; } }
 
-		public static Utils.NameGenerator NameGen { get; } = new Utils.NameGenerator();
+		public static Utilities.NameGenerator NameGen { get; } = new Utilities.NameGenerator();
 
 		private Dictionary<string, MenuDefinition> menus;
 		private Dictionary<Server.Elements.Client, Dictionary<string, MenuHandler>> clients;

@@ -42,7 +42,8 @@ namespace LuaConnector
 										Lua.CoreModules.Bit32 |
 										Lua.CoreModules.LoadMethods |
 										Lua.CoreModules.Coroutine |
-										Lua.CoreModules.IO);
+										Lua.CoreModules.IO |
+										Lua.CoreModules.Debug);
 
 			Lua.ModuleRegister.RegisterModuleType<LuaModules.XmlModule>(_context.Globals);
 			Lua.ModuleRegister.RegisterModuleType<LuaModules.HttpModule>(_context.Globals);
@@ -77,18 +78,8 @@ namespace LuaConnector
 			_context.Globals["Enum", "ExplosionType"]   = Lua.UserData.CreateStatic<Server.Constant.ExplosionType>();
 			_context.Globals["Enum", "WeaponComponent"] = Lua.UserData.CreateStatic<Server.Constant.WeaponComponent>();
 			_context.Globals["Enum", "WeaponTint"] = Lua.UserData.CreateStatic<Server.Constant.WeaponTint>();
-		}
 
-		/// <summary>
-		/// Loads lua scripts
-		/// </summary>
-		/// <returns>False if the script is a module</returns>
-		public bool Load()
-		{
-			if (_context.DoFile(_filename).IsNil() && HasApiHooks())
-				return true;
-
-			return false;
+			_context.DoFile(_filename);
 		}
 
 		#region Helpers

@@ -248,7 +248,7 @@ namespace LuaConnector
 			_loader = new ScriptLoader(path ?? "LuaScripts");
 			_loader.LoadAll();
 		}
-
+		
 		private void OnResourceStop()
 		{
 			_loader.UnloadAll();

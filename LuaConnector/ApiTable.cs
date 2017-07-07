@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using LuaConnector.Utilities;
+
 using GrandTheftMultiplayer.Server.API;
 using GrandTheftMultiplayer.Server.Elements;
 using GrandTheftMultiplayer.Server.Constant;
@@ -22,8 +24,8 @@ namespace LuaConnector
 		{
 			Table["attachEntityToEntity"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.attachEntityToEntity(a[0].ToNetHandle(),
-													a[1].ToNetHandle(),
+				context.API.attachEntityToEntity(Utils.TryGetHandleFromEntity(a[0]),
+													Utils.TryGetHandleFromEntity(a[1]),
 													a[2].ToString(),
 													a[3].ToVector3(),
 													a[4].ToVector3());
@@ -43,14 +45,14 @@ namespace LuaConnector
 
 			Table["breakVehicleDoor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.breakVehicleDoor(a[0].ToNetHandle(), (int)a[1].CastToNumber().Value, a[2].CastToBool());
+				context.API.breakVehicleDoor(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].CastToNumber().Value, a[2].CastToBool());
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["breakVehicleWindow"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.breakVehicleWindow(a[0].ToNetHandle(), (int)a[1].CastToNumber().Value, a[2].CastToBool());
+				context.API.breakVehicleWindow(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].CastToNumber().Value, a[2].CastToBool());
 
 				return Lua.DynValue.Nil;
 			});
@@ -101,7 +103,7 @@ namespace LuaConnector
 
 				try
 				{
-					var handle = a[0].ToNetHandle();
+					var handle = Utils.TryGetHandleFromEntity(a[0]);
 
 					obj = context.API.createBlip(handle);
 				}
@@ -136,7 +138,7 @@ namespace LuaConnector
 			{
 				var obj = context.API.createLoopedParticleEffectOnEntity(a[0].CastToString(),
 																			a[1].CastToString(),
-																			a[2].ToNetHandle(),
+																			Utils.TryGetHandleFromEntity(a[2]),
 																			a[3].ToVector3(),
 																			a[4].ToVector3(),
 																			(float)a[5].CastToNumber().Value,
@@ -210,7 +212,7 @@ namespace LuaConnector
 			{
 				context.API.createParticleEffectOnEntity(a[0].CastToString(),
 														a[1].CastToString(),
-														a[2].ToNetHandle(),
+														Utils.TryGetHandleFromEntity(a[2]),
 														a[3].ToVector3(),
 														a[4].ToVector3(),
 														(float)a[5].CastToNumber().Value,
@@ -329,7 +331,7 @@ namespace LuaConnector
 
 			Table["deleteEntity"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.deleteEntity(a[0].ToNetHandle());
+				context.API.deleteEntity(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.Nil;
 			});
@@ -343,7 +345,7 @@ namespace LuaConnector
 
 			Table["detachEntity"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.detachEntity(a[0].ToNetHandle(), a[1].CastToBool());
+				context.API.detachEntity(Utils.TryGetHandleFromEntity(a[0]), a[1].CastToBool());
 
 				return Lua.DynValue.Nil;
 			});
@@ -364,14 +366,14 @@ namespace LuaConnector
 
 			Table["doesEntityExist"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.doesEntityExist(a[0].ToNetHandle());
+				var obj = context.API.doesEntityExist(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
 
 			Table["doesEntityExistForPlayer"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.doesEntityExistForPlayer(a[0].ToClient(), a[1].ToNetHandle());
+				var obj = context.API.doesEntityExistForPlayer(a[0].ToClient(), Utils.TryGetHandleFromEntity(a[1]));
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
@@ -399,7 +401,7 @@ namespace LuaConnector
 
 			Table["explodeVehicle"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.explodeVehicle(a[0].ToNetHandle());
+				context.API.explodeVehicle(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.Nil;
 			});
@@ -445,14 +447,14 @@ namespace LuaConnector
 
 			Table["getAllEntityData"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getAllEntityData(a[0].ToNetHandle());
+				var obj = context.API.getAllEntityData(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getAllEntitySyncedData"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getAllEntitySyncedData(a[0].ToNetHandle());
+				var obj = context.API.getAllEntitySyncedData(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
@@ -540,63 +542,63 @@ namespace LuaConnector
 
 			Table["getBlipColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getBlipColor(a[0].ToNetHandle());
+				var obj = context.API.getBlipColor(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getBlipName"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getBlipName(a[0].ToNetHandle());
+				var obj = context.API.getBlipName(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewString(obj);
 			});
 
 			Table["getBlipPosition"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getBlipPosition(a[0].ToNetHandle());
+				var obj = context.API.getBlipPosition(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getBlipRouteColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getBlipRouteColor(a[0].ToNetHandle());
+				var obj = context.API.getBlipRouteColor(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getBlipRouteVisible"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getBlipRouteVisible(a[0].ToNetHandle());
+				var obj = context.API.getBlipRouteVisible(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
 
 			Table["getBlipScale"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getBlipScale(a[0].ToNetHandle());
+				var obj = context.API.getBlipScale(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getBlipShortRange"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getBlipShortRange(a[0].ToNetHandle());
+				var obj = context.API.getBlipShortRange(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
 
 			Table["getBlipSprite"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getBlipSprite(a[0].ToNetHandle());
+				var obj = context.API.getBlipSprite(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getBlipTransparency"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getBlipTransparency(a[0].ToNetHandle());
+				var obj = context.API.getBlipTransparency(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
@@ -614,21 +616,21 @@ namespace LuaConnector
 
 			Table["getEntityCollisionless"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getEntityCollisionless(a[0].ToNetHandle());
+				var obj = context.API.getEntityCollisionless(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getEntityData"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getEntityData(a[0].ToNetHandle(), a[1].CastToString());
+				var obj = context.API.getEntityData(Utils.TryGetHandleFromEntity(a[0]), a[1].CastToString());
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getEntityDimension"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getEntityDimension(a[0].ToNetHandle());
+				var obj = context.API.getEntityDimension(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
@@ -676,56 +678,56 @@ namespace LuaConnector
 
 			Table["getEntityInvincible"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getEntityInvincible(a[0].ToNetHandle());
+				var obj = context.API.getEntityInvincible(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getEntityModel"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getEntityModel(a[0].ToNetHandle());
+				var obj = context.API.getEntityModel(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getEntityPosition"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getEntityPosition(a[0].ToNetHandle());
+				var obj = context.API.getEntityPosition(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getEntityRotation"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getEntityRotation(a[0].ToNetHandle());
+				var obj = context.API.getEntityRotation(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getEntitySyncedData"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getEntitySyncedData(a[0].ToNetHandle(), a[0].CastToString());
+				var obj = context.API.getEntitySyncedData(Utils.TryGetHandleFromEntity(a[0]), a[0].CastToString());
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getEntityTransparency"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getEntityTransparency(a[0].ToNetHandle());
+				var obj = context.API.getEntityTransparency(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getEntityType"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getEntityType(a[0].ToNetHandle());
+				var obj = context.API.getEntityType(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getEntityVelocity"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getEntityVelocity(a[0].ToNetHandle());
+				var obj = context.API.getEntityVelocity(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
@@ -764,28 +766,28 @@ namespace LuaConnector
 
 			Table["getMarkerColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getMarkerColor(a[0].ToNetHandle());
+				var obj = context.API.getMarkerColor(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getMarkerDirection"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getMarkerDirection(a[0].ToNetHandle());
+				var obj = context.API.getMarkerDirection(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getMarkerScale"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getMarkerScale(a[0].ToNetHandle());
+				var obj = context.API.getMarkerScale(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getMarkerType"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getMarkerType(a[0].ToNetHandle());
+				var obj = context.API.getMarkerType(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
@@ -803,21 +805,21 @@ namespace LuaConnector
 
 			Table["getPickupAmount"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getPickupAmount(a[0].ToNetHandle());
+				var obj = context.API.getPickupAmount(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getPickupCustomModel"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getPickupCustomModel(a[0].ToNetHandle());
+				var obj = context.API.getPickupCustomModel(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getPickupPickedUp"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getPickupPickedUp(a[0].ToNetHandle());
+				var obj = context.API.getPickupPickedUp(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
@@ -1151,28 +1153,28 @@ namespace LuaConnector
 
 			Table["getTextLabelColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getTextLabelColor(a[0].ToNetHandle());
+				var obj = context.API.getTextLabelColor(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});			
 
 			Table["getTextLabelRange"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getTextLabelRange(a[0].ToNetHandle());
+				var obj = context.API.getTextLabelRange(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getTextLabelSeethrough"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getTextLabelSeethrough(a[0].ToNetHandle());
+				var obj = context.API.getTextLabelSeethrough(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
 
 			Table["getTextLabelText"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getTextLabelText(a[0].ToNetHandle());
+				var obj = context.API.getTextLabelText(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewString(obj);
 			});
@@ -1197,7 +1199,7 @@ namespace LuaConnector
 
 			Table["getVehicleBulletproofTyres"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleBulletproofTyres(a[0].ToNetHandle());
+				var obj = context.API.getVehicleBulletproofTyres(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
@@ -1218,21 +1220,21 @@ namespace LuaConnector
 
 			Table["getVehicleCustomPrimaryColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleCustomPrimaryColor(a[0].ToNetHandle());
+				var obj = context.API.getVehicleCustomPrimaryColor(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getVehicleCustomSecondaryColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleCustomSecondaryColor(a[0].ToNetHandle());
+				var obj = context.API.getVehicleCustomSecondaryColor(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getVehicleDashboardColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleDashboardColor(a[0].ToNetHandle());
+				var obj = context.API.getVehicleDashboardColor(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
@@ -1246,56 +1248,56 @@ namespace LuaConnector
 
 			Table["getVehicleDoorState"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleDoorState(a[0].ToNetHandle(), (int)a[1].Number);
+				var obj = context.API.getVehicleDoorState(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
 
 			Table["getVehicleEnginePowerMultiplier"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleEnginePowerMultiplier(a[0].ToNetHandle());
+				var obj = context.API.getVehicleEnginePowerMultiplier(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getVehicleEngineStatus"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleEngineStatus(a[0].ToNetHandle());
+				var obj = context.API.getVehicleEngineStatus(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
 
 			Table["getVehicleEngineTorqueMultiplier"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleEngineTorqueMultiplier(a[0].ToNetHandle());
+				var obj = context.API.getVehicleEngineTorqueMultiplier(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getVehicleExtra"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleExtra(a[0].ToNetHandle(), (int)a[1].Number);
+				var obj = context.API.getVehicleExtra(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
 
 			Table["getVehicleHealth"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleHealth(a[0].ToNetHandle());
+				var obj = context.API.getVehicleHealth(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getVehicleLivery"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleLivery(a[0].ToNetHandle());
+				var obj = context.API.getVehicleLivery(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getVehicleLocked"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleLocked(a[0].ToNetHandle());
+				var obj = context.API.getVehicleLocked(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
@@ -1337,140 +1339,140 @@ namespace LuaConnector
 
 			Table["getVehicleMod"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleMod(a[0].ToNetHandle(), (int)a[1].Number);
+				var obj = context.API.getVehicleMod(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getVehicleModColor1"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleModColor1(a[0].ToNetHandle());
+				var obj = context.API.getVehicleModColor1(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getVehicleModColor2"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleModColor2(a[0].ToNetHandle());
+				var obj = context.API.getVehicleModColor2(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getVehicleNeonColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleNeonColor(a[0].ToNetHandle());
+				var obj = context.API.getVehicleNeonColor(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getVehicleNeonState"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleNeonState(a[0].ToNetHandle(), (int)a[1].Number);
+				var obj = context.API.getVehicleNeonState(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
 
 			Table["getVehicleNumberPlate"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleNumberPlate(a[0].ToNetHandle());
+				var obj = context.API.getVehicleNumberPlate(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewString(obj);
 			});
 
 			Table["getVehicleNumberPlateStyle"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleNumberPlateStyle(a[0].ToNetHandle());
+				var obj = context.API.getVehicleNumberPlateStyle(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getVehicleOccupants"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleOccupants(a[0].ToNetHandle());
+				var obj = context.API.getVehicleOccupants(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 			
 			Table["getVehiclePearlescentColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehiclePearlescentColor(a[0].ToNetHandle());
+				var obj = context.API.getVehiclePearlescentColor(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getVehiclePrimaryColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehiclePrimaryColor(a[0].ToNetHandle());
+				var obj = context.API.getVehiclePrimaryColor(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getVehicleSecondaryColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleSecondaryColor(a[0].ToNetHandle());
+				var obj = context.API.getVehicleSecondaryColor(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getVehicleSirenState"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleSirenState(a[0].ToNetHandle());
+				var obj = context.API.getVehicleSirenState(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
 
 			Table["getVehicleSpecialLightStatus"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleSpecialLightStatus(a[0].ToNetHandle());
+				var obj = context.API.getVehicleSpecialLightStatus(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
 
 			Table["getVehicleTrailer"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleTrailer(a[0].ToNetHandle());
+				var obj = context.API.getVehicleTrailer(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getVehicleTraileredBy"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleTraileredBy(a[0].ToNetHandle());
+				var obj = context.API.getVehicleTraileredBy(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getVehicleTrimColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleTrimColor(a[0].ToNetHandle());
+				var obj = context.API.getVehicleTrimColor(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getVehicleTyreSmokeColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleTyreSmokeColor(a[0].ToNetHandle());
+				var obj = context.API.getVehicleTyreSmokeColor(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.FromObject(c.GetScript(), obj);
 			});
 
 			Table["getVehicleWheelColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleWheelColor(a[0].ToNetHandle());
+				var obj = context.API.getVehicleWheelColor(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getVehicleWheelType"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleWheelType(a[0].ToNetHandle());
+				var obj = context.API.getVehicleWheelType(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
 
 			Table["getVehicleWindowTint"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.getVehicleWindowTint(a[0].ToNetHandle());
+				var obj = context.API.getVehicleWindowTint(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewNumber(obj);
 			});
@@ -1524,14 +1526,14 @@ namespace LuaConnector
 
 			Table["hasEntityData"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.hasEntityData(a[0].ToNetHandle(), a[1].String);
+				var obj = context.API.hasEntityData(Utils.TryGetHandleFromEntity(a[0]), a[1].String);
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
 
 			Table["hasEntitySyncedData"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.hasEntitySyncedData(a[0].ToNetHandle(), a[1].String);
+				var obj = context.API.hasEntitySyncedData(Utils.TryGetHandleFromEntity(a[0]), a[1].String);
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
@@ -1586,14 +1588,14 @@ namespace LuaConnector
 
 			Table["isEntityAttachedToAnything"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.isEntityAttachedToAnything(a[0].ToNetHandle());
+				var obj = context.API.isEntityAttachedToAnything(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
 
 			Table["isEntityAttachedToEntity"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.isEntityAttachedToEntity(a[0].ToNetHandle(), a[1].ToNetHandle());
+				var obj = context.API.isEntityAttachedToEntity(Utils.TryGetHandleFromEntity(a[0]), Utils.TryGetHandleFromEntity(a[1]));
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
@@ -1712,21 +1714,21 @@ namespace LuaConnector
 
 			Table["isVehicleDoorBroken"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.isVehicleDoorBroken(a[0].ToNetHandle(), (int)a[1].Number);
+				var obj = context.API.isVehicleDoorBroken(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
 
 			Table["isVehicleTyrePopped"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.isVehicleTyrePopped(a[0].ToNetHandle(), (int)a[1].Number);
+				var obj = context.API.isVehicleTyrePopped(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
 
 			Table["isVehicleWindowBroken"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				var obj = context.API.isVehicleWindowBroken(a[0].ToNetHandle(), (int)a[1].Number);
+				var obj = context.API.isVehicleWindowBroken(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.NewBoolean(obj);
 			});
@@ -1773,14 +1775,14 @@ namespace LuaConnector
 
 			Table["moveEntityPosition"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.moveEntityPosition(a[0].ToNetHandle(), a[1].ToVector3(), (int)a[2].Number);
+				context.API.moveEntityPosition(Utils.TryGetHandleFromEntity(a[0]), a[1].ToVector3(), (int)a[2].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["moveEntityRotation"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.moveEntityRotation(a[0].ToNetHandle(), a[1].ToVector3(), (int)a[2].Number);
+				context.API.moveEntityRotation(Utils.TryGetHandleFromEntity(a[0]), a[1].ToVector3(), (int)a[2].Number);
 
 				return Lua.DynValue.Nil;
 			});
@@ -1803,14 +1805,14 @@ namespace LuaConnector
 
 			Table["playPedAnimation"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.playPedAnimation(a[0].ToNetHandle(), a[1].Boolean, a[2].String, a[3].String);
+				context.API.playPedAnimation(Utils.TryGetHandleFromEntity(a[0]), a[1].Boolean, a[2].String, a[3].String);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["playPedScenario"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.playPedScenario(a[0].ToNetHandle(), a[1].String);
+				context.API.playPedScenario(Utils.TryGetHandleFromEntity(a[0]), a[1].String);
 
 				return Lua.DynValue.Nil;
 			});
@@ -1840,7 +1842,7 @@ namespace LuaConnector
 
 			Table["popVehicleTyre"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.popVehicleTyre(a[0].ToNetHandle(), (int)a[1].Number, a[2].Boolean);
+				context.API.popVehicleTyre(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number, a[2].Boolean);
 
 				return Lua.DynValue.Nil;
 			});
@@ -1893,7 +1895,7 @@ namespace LuaConnector
 
 			Table["removeVehicleMod"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.removeVehicleMod(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.removeVehicleMod(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
@@ -1902,7 +1904,7 @@ namespace LuaConnector
 
 			Table["repairVehicle"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.repairVehicle(a[0].ToNetHandle());
+				context.API.repairVehicle(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.Nil;
 			});
@@ -1918,14 +1920,14 @@ namespace LuaConnector
 
 			Table["resetEntityData"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.resetEntityData(a[0].ToNetHandle(), a[1].String);
+				context.API.resetEntityData(Utils.TryGetHandleFromEntity(a[0]), a[1].String);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["resetEntitySyncedData"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.resetEntitySyncedData(a[0].ToNetHandle(), a[1].String);
+				context.API.resetEntitySyncedData(Utils.TryGetHandleFromEntity(a[0]), a[1].String);
 
 				return Lua.DynValue.Nil;
 			});
@@ -1969,7 +1971,7 @@ namespace LuaConnector
 
 			Table["respawnPickup"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.respawnPickup(a[0].ToNetHandle());
+				context.API.respawnPickup(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.Nil;
 			});
@@ -2129,63 +2131,63 @@ namespace LuaConnector
 
 			Table["setBlipColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setBlipColor(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setBlipColor(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setBlipName"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setBlipName(a[0].ToNetHandle(), a[1].String);
+				context.API.setBlipName(Utils.TryGetHandleFromEntity(a[0]), a[1].String);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setBlipPosition"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setBlipPosition(a[0].ToNetHandle(), a[1].ToVector3());
+				context.API.setBlipPosition(Utils.TryGetHandleFromEntity(a[0]), a[1].ToVector3());
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setBlipRouteColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setBlipRouteColor(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setBlipRouteColor(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setBlipRouteVisible"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setBlipRouteVisible(a[0].ToNetHandle(), a[1].Boolean);
+				context.API.setBlipRouteVisible(Utils.TryGetHandleFromEntity(a[0]), a[1].Boolean);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setBlipScale"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setBlipScale(a[0].ToNetHandle(), (float)a[0].Number);
+				context.API.setBlipScale(Utils.TryGetHandleFromEntity(a[0]), (float)a[0].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setBlipShortRange"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setBlipShortRange(a[0].ToNetHandle(), a[1].Boolean);
+				context.API.setBlipShortRange(Utils.TryGetHandleFromEntity(a[0]), a[1].Boolean);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setBlipSprite"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setBlipSprite(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setBlipSprite(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setBlipTransparency"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setBlipTransparency(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setBlipTransparency(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
@@ -2203,35 +2205,35 @@ namespace LuaConnector
 
 			Table["setEntityCollisionless"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setEntityCollisionless(a[0].ToNetHandle(), a[1].Boolean);
+				context.API.setEntityCollisionless(Utils.TryGetHandleFromEntity(a[0]), a[1].Boolean);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setEntityData"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setEntityData(a[0].ToNetHandle(), a[1].String, a[2].ToObject());
+				context.API.setEntityData(Utils.TryGetHandleFromEntity(a[0]), a[1].String, a[2].ToObject());
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setEntityDimension"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setEntityDimension(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setEntityDimension(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setEntityInvincible"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setEntityInvincible(a[0].ToNetHandle(), a[1].Boolean);
+				context.API.setEntityInvincible(Utils.TryGetHandleFromEntity(a[0]), a[1].Boolean);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setEntityPosition"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setEntityPosition(a[0].ToNetHandle(), a[1].ToVector3());
+				context.API.setEntityPosition(Utils.TryGetHandleFromEntity(a[0]), a[1].ToVector3());
 
 				return Lua.DynValue.Nil;
 			});
@@ -2240,31 +2242,31 @@ namespace LuaConnector
 			{
 				var arg0 = a[0];
 
-				if (arg0.UserData.Object.GetType() == typeof(NetHandle))
-					context.API.setEntityPositionFrozen(arg0.ToNetHandle(), a[1].Boolean);
+				if (arg0.UserData.Object.GetType() == typeof(NetHandle) || arg0.UserData.Object.GetType() == typeof(Entity))
+					context.API.setEntityPositionFrozen(Utils.TryGetHandleFromEntity(arg0), a[1].Boolean);
 				else
-					context.API.setEntityPositionFrozen(arg0.ToClient(), a[1].ToNetHandle(), a[2].Boolean);
+					context.API.setEntityPositionFrozen(arg0.ToClient(), Utils.TryGetHandleFromEntity(a[1]), a[2].Boolean);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setEntityRotation"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setEntityRotation(a[0].ToNetHandle(), a[1].ToVector3());
+				context.API.setEntityRotation(Utils.TryGetHandleFromEntity(a[0]), a[1].ToVector3());
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setEntitySyncedData"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setEntitySyncedData(a[0].ToNetHandle(), a[1].String, a[2].ToObject());
+				context.API.setEntitySyncedData(Utils.TryGetHandleFromEntity(a[0]), a[1].String, a[2].ToObject());
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setEntityTransparency"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setEntityTransparency(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setEntityTransparency(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
@@ -2282,7 +2284,7 @@ namespace LuaConnector
 
 			Table["setMarkerColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setMarkerColor(a[0].ToNetHandle(),
+				context.API.setMarkerColor(Utils.TryGetHandleFromEntity(a[0]),
 											(int)a[1].Number,
 											(int)a[2].Number,
 											(int)a[3].Number,
@@ -2293,21 +2295,21 @@ namespace LuaConnector
 
 			Table["setMarkerDirection"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setMarkerDirection(a[0].ToNetHandle(), a[1].ToVector3());
+				context.API.setMarkerDirection(Utils.TryGetHandleFromEntity(a[0]), a[1].ToVector3());
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setMarkerScale"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setMarkerScale(a[0].ToNetHandle(), a[1].ToVector3());
+				context.API.setMarkerScale(Utils.TryGetHandleFromEntity(a[0]), a[1].ToVector3());
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setMarkerType"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setMarkerType(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setMarkerType(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
@@ -2359,7 +2361,7 @@ namespace LuaConnector
 
 			Table["setPlayerIntoVehicle"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setPlayerIntoVehicle(a[0].ToClient(), a[1].ToNetHandle(), (int)a[2].Number);
+				context.API.setPlayerIntoVehicle(a[0].ToClient(), Utils.TryGetHandleFromEntity(a[1]), (int)a[2].Number);
 
 				return Lua.DynValue.Nil;
 			});
@@ -2492,7 +2494,7 @@ namespace LuaConnector
 
 			Table["setTextLabelColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setTextLabelColor(a[0].ToNetHandle(),
+				context.API.setTextLabelColor(Utils.TryGetHandleFromEntity(a[0]),
 												(int)a[1].Number,
 												(int)a[2].Number,
 												(int)a[3].Number,
@@ -2503,21 +2505,21 @@ namespace LuaConnector
 
 			Table["setTextLabelRange"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setTextLabelRange(a[0].ToNetHandle(), (float)a[1].Number);
+				context.API.setTextLabelRange(Utils.TryGetHandleFromEntity(a[0]), (float)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setTextLabelSeethrough"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setTextLabelSeethrough(a[0].ToNetHandle(), a[1].Boolean);
+				context.API.setTextLabelSeethrough(Utils.TryGetHandleFromEntity(a[0]), a[1].Boolean);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setTextLabelText"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setTextLabelText(a[0].ToNetHandle(), a[1].String);
+				context.API.setTextLabelText(Utils.TryGetHandleFromEntity(a[0]), a[1].String);
 
 				return Lua.DynValue.Nil;
 			});
@@ -2535,14 +2537,14 @@ namespace LuaConnector
 
 			Table["setVehicleBulletproofTyres"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleBulletproofTyres(a[0].ToNetHandle(), a[1].Boolean);
+				context.API.setVehicleBulletproofTyres(Utils.TryGetHandleFromEntity(a[0]), a[1].Boolean);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleCustomPrimaryColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleCustomPrimaryColor(a[0].ToNetHandle(),
+				context.API.setVehicleCustomPrimaryColor(Utils.TryGetHandleFromEntity(a[0]),
 														(int)a[1].Number,
 														(int)a[2].Number,
 														(int)a[3].Number);
@@ -2552,7 +2554,7 @@ namespace LuaConnector
 
 			Table["setVehicleCustomSecondaryColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleCustomSecondaryColor(a[0].ToNetHandle(),
+				context.API.setVehicleCustomSecondaryColor(Utils.TryGetHandleFromEntity(a[0]),
 															(int)a[1].Number,
 															(int)a[2].Number,
 															(int)a[3].Number);
@@ -2562,77 +2564,77 @@ namespace LuaConnector
 
 			Table["setVehicleDashboardColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleDashboardColor(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setVehicleDashboardColor(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleDoorState"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleDoorState(a[0].ToNetHandle(), (int)a[1].Number, a[2].Boolean);
+				context.API.setVehicleDoorState(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number, a[2].Boolean);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleEnginePowerMultiplier"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleEnginePowerMultiplier(a[0].ToNetHandle(), (float)a[1].Number);
+				context.API.setVehicleEnginePowerMultiplier(Utils.TryGetHandleFromEntity(a[0]), (float)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleEngineStatus"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleEngineStatus(a[0].ToNetHandle(), a[1].Boolean);
+				context.API.setVehicleEngineStatus(Utils.TryGetHandleFromEntity(a[0]), a[1].Boolean);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleEngineTorqueMultiplier"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleEngineTorqueMultiplier(a[0].ToNetHandle(), (float)a[1].Number);
+				context.API.setVehicleEngineTorqueMultiplier(Utils.TryGetHandleFromEntity(a[0]), (float)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleExtra"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleExtra(a[0].ToNetHandle(), (int)a[1].Number, a[2].Boolean);
+				context.API.setVehicleExtra(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number, a[2].Boolean);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleHealth"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleHealth(a[0].ToNetHandle(), (float)a[1].Number);
+				context.API.setVehicleHealth(Utils.TryGetHandleFromEntity(a[0]), (float)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleLivery"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleLivery(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setVehicleLivery(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleLocked"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleLocked(a[0].ToNetHandle(), a[1].Boolean);
+				context.API.setVehicleLocked(Utils.TryGetHandleFromEntity(a[0]), a[1].Boolean);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleMod"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleMod(a[0].ToNetHandle(), (int)a[1].Number, (int)a[2].Number);
+				context.API.setVehicleMod(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number, (int)a[2].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleModColor1"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleModColor1(a[0].ToNetHandle(),
+				context.API.setVehicleModColor1(Utils.TryGetHandleFromEntity(a[0]),
 												(int)a[1].Number,
 												(int)a[2].Number,
 												(int)a[3].Number);
@@ -2642,7 +2644,7 @@ namespace LuaConnector
 
 			Table["setVehicleModColor2"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleModColor2(a[0].ToNetHandle(),
+				context.API.setVehicleModColor2(Utils.TryGetHandleFromEntity(a[0]),
 												(int)a[1].Number,
 												(int)a[2].Number,
 												(int)a[3].Number);
@@ -2652,7 +2654,7 @@ namespace LuaConnector
 
 			Table["setVehicleNeonColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleNeonColor(a[0].ToNetHandle(),
+				context.API.setVehicleNeonColor(Utils.TryGetHandleFromEntity(a[0]),
 												(int)a[1].Number,
 												(int)a[2].Number,
 												(int)a[3].Number);
@@ -2662,63 +2664,63 @@ namespace LuaConnector
 
 			Table["setVehicleNeonState"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleNeonState(a[0].ToNetHandle(), (int)a[1].Number, a[2].Boolean);
+				context.API.setVehicleNeonState(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number, a[2].Boolean);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleNumberPlate"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleNumberPlate(a[0].ToNetHandle(), a[1].String);
+				context.API.setVehicleNumberPlate(Utils.TryGetHandleFromEntity(a[0]), a[1].String);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleNumberPlateStyle"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleNumberPlateStyle(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setVehicleNumberPlateStyle(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehiclePearlescentColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehiclePearlescentColor(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setVehiclePearlescentColor(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehiclePrimaryColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehiclePrimaryColor(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setVehiclePrimaryColor(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleSecondaryColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleSecondaryColor(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setVehicleSecondaryColor(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleSpecialLightStatus"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleSpecialLightStatus(a[0].ToNetHandle(), a[1].Boolean);
+				context.API.setVehicleSpecialLightStatus(Utils.TryGetHandleFromEntity(a[0]), a[1].Boolean);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleTrimColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleTrimColor(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setVehicleTrimColor(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleTyreSmokeColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleTyreSmokeColor(a[0].ToNetHandle(),
+				context.API.setVehicleTyreSmokeColor(Utils.TryGetHandleFromEntity(a[0]),
 													(int)a[1].Number,
 													(int)a[2].Number,
 													(int)a[3].Number);
@@ -2728,21 +2730,21 @@ namespace LuaConnector
 
 			Table["setVehicleWheelColor"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleWheelColor(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setVehicleWheelColor(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleWheelType"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleWheelType(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setVehicleWheelType(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
 
 			Table["setVehicleWindowTint"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.setVehicleWindowTint(a[0].ToNetHandle(), (int)a[1].Number);
+				context.API.setVehicleWindowTint(Utils.TryGetHandleFromEntity(a[0]), (int)a[1].Number);
 
 				return Lua.DynValue.Nil;
 			});
@@ -2795,7 +2797,7 @@ namespace LuaConnector
 
 			Table["stopPedAnimation"] = Lua.DynValue.NewCallback((c, a) =>
 			{
-				context.API.stopPedAnimation(a[0].ToNetHandle());
+				context.API.stopPedAnimation(Utils.TryGetHandleFromEntity(a[0]));
 
 				return Lua.DynValue.Nil;
 			});

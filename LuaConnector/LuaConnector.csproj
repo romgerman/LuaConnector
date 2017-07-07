@@ -40,7 +40,7 @@
       <HintPath>D:\GTMP\server\GrandTheftMultiplayer.Shared.dll</HintPath>
     </Reference>
     <Reference Include="MoonSharp.Interpreter">
-      <HintPath>..\moonsharp_release_2.0.0.0\interpreter\net40\MoonSharp.Interpreter.dll</HintPath>
+      <HintPath>..\..\moonsharp_release_2.0.0.0\interpreter\net40\MoonSharp.Interpreter.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>D:\GTMP\server\Newtonsoft.Json.dll</HintPath>
@@ -55,7 +55,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApiTable.cs" />
-    <Compile Include="Extensions.cs" />
+    <Compile Include="Utilities\Extensions.cs" />
     <Compile Include="IScript.cs" />
     <Compile Include="LuaModules\ClientsideMenuModule.cs" />
     <Compile Include="LuaModules\CommandsModule.cs" />
@@ -72,7 +72,8 @@
     <Compile Include="ScriptLoader.cs" />
     <Compile Include="LuaModules\XmlModule.cs" />
     <Compile Include="TimerEx.cs" />
-    <Compile Include="Utils\NameGenerator.cs" />
+    <Compile Include="Utilities\NameGenerator.cs" />
+    <Compile Include="Utilities\Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="changelog.txt" />

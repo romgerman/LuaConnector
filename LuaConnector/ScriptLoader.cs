@@ -191,16 +191,12 @@ namespace LuaConnector
 			{
 				var script = new LuaScript(filename, this);
 
-				if (!script.Load())
-					return;
-
 				if (!_scripts.TryAdd(filename, script))
 					throw new Lua.ScriptRuntimeException($"Cannot add script {script.FileName}");
 
 				LuaConnector.Instance.API.consoleOutput($"{path} was loaded successfully");
 
 				script.CallFunction("Script", "OnStart");
-
 				script.SetScriptHasLoaded();
 			}
 			catch(Lua.InterpreterException e)
