@@ -9,6 +9,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaConnector", "LuaConnecto
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DbProviders", "DbProviders", "{87035C22-F50B-4472-85F3-F350D56C98C3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F3B8C2B2-D619-45CC-B5A7-7F4AC5B83A9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQLiteTests", "DbProviders\SQLiteTests\SQLiteTests.csproj", "{95E4BE99-D002-44A1-A18B-C6C6D9586044}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaConnector.ORM", "LuaConnector.ORM\LuaConnector.ORM.csproj", "{642EEBD9-E99E-4488-83DB-09510E0B48D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,11 +29,21 @@ Global
 		{92F6D2A7-1710-4F6B-B5F4-327594BC62BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{92F6D2A7-1710-4F6B-B5F4-327594BC62BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{92F6D2A7-1710-4F6B-B5F4-327594BC62BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95E4BE99-D002-44A1-A18B-C6C6D9586044}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95E4BE99-D002-44A1-A18B-C6C6D9586044}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95E4BE99-D002-44A1-A18B-C6C6D9586044}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95E4BE99-D002-44A1-A18B-C6C6D9586044}.Release|Any CPU.Build.0 = Release|Any CPU
+		{642EEBD9-E99E-4488-83DB-09510E0B48D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{642EEBD9-E99E-4488-83DB-09510E0B48D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{642EEBD9-E99E-4488-83DB-09510E0B48D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{642EEBD9-E99E-4488-83DB-09510E0B48D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{DF4F9C6E-1F0E-4ECE-A77A-B114E66B55B3} = {87035C22-F50B-4472-85F3-F350D56C98C3}
+		{F3B8C2B2-D619-45CC-B5A7-7F4AC5B83A9D} = {87035C22-F50B-4472-85F3-F350D56C98C3}
+		{95E4BE99-D002-44A1-A18B-C6C6D9586044} = {F3B8C2B2-D619-45CC-B5A7-7F4AC5B83A9D}
 	EndGlobalSection
 EndGlobal

@@ -6,6 +6,8 @@ using GrandTheftMultiplayer.Server.Managers;
 using GrandTheftMultiplayer.Server.Constant;
 using GrandTheftMultiplayer.Shared;
 
+using LuaConnector.ORM;
+
 namespace LuaConnector
 {
 	public class LuaConnector : Script
@@ -243,9 +245,14 @@ namespace LuaConnector
 		{
 			new ApiTable(this);
 
-			string path = API.getSetting<string>("folder");
+			Print(LogCat.Info, "Loading database providers...");
+			LuaModules.DatabaseModule.RegisterDatabaseProviders();
 
-			_loader = new ScriptLoader(path ?? "LuaScripts");
+			string scriptsPath = API.getSetting<string>("folder");
+
+			Print(LogCat.Info, "Loading all Lua scripts...");
+
+			_loader = new ScriptLoader(scriptsPath ?? "LuaScripts");
 			_loader.LoadAll();
 		}
 		

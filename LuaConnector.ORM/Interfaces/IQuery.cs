@@ -4,16 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LuaConnector.LuaModules.ORM
+namespace LuaConnector.ORM
 {
-	public interface ITable
+	public interface IQuery
 	{
 		void Insert();
+		void Select();
 		void Update();
 		void Delete();
-		void Get();
-		void First();
-		void Last();
-		void All();
+		void Where();
+
+		Dictionary<string, object> AsTable();
+		object[] AsArray();
 	}
 }

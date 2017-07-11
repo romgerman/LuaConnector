@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
-using LuaConnector.LuaModules.ORM;
-using LuaConnector.LuaModules.ORM.Providers;
+using LuaConnector.ORM;
+using LuaConnector.ORM.Providers;
+using LuaConnector.ORM.Attributes;
+
+using System.Data.Common;
+using System.Data.SQLite;
 
 namespace SQLite
 {
@@ -13,14 +14,48 @@ namespace SQLite
     {
 		public string Name { get; } = "sqlite";
 
-		public SQLiteProvider()
-		{
-			
-		}
+		private SQLiteConnection _connection;
 
-		public ITable GetTableByName(string name)
+		public SQLiteProvider() { }
+		
+		public void Connect(string connectionString)
 		{
-			throw new NotImplementedException();
+			_connection = new SQLiteConnection(connectionString);
+
+			var filename = FindFilenameInConnectionString(connectionString);
+
+			if (filename != null && !File.Exists(filename))
+				SQLiteConnection.CreateFile(filename);
+
+			_connection.Open();
+		}
+		
+		public void Disconnect()
+		{
+			_connection.Close();
+		}
+		
+		public int ExecuteNonQuery(string query)
+		{
+			SQLiteCommand command = new SQLiteCommand(query, _connection);
+
+			return command.ExecuteNonQuery();
+		}
+		
+		public ITable Table(string name)
+		{
+			return new SQLiteTable(name, _connection);
+		}		
+
+		private string FindFilenameInConnectionString(string str)
+		{
+			string[] parameters = str.Split(';');
+
+			foreach (var p in parameters)
+				if (p.IndexOf("Data Source") > -1)
+					return p.Substring(p.IndexOf('=') + 1);
+
+			return null;
 		}
 	}
 }

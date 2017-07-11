@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LuaConnector</RootNamespace>
     <AssemblyName>LuaConnector</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -62,10 +62,7 @@
     <Compile Include="LuaModules\HttpModule.cs" />
     <Compile Include="LuaApiObjects.cs" />
     <Compile Include="LuaConnector.cs" />
-    <Compile Include="LuaModules\ORM\DatabaseModule.cs" />
-    <Compile Include="LuaModules\ORM\ProviderLoader.cs" />
-    <Compile Include="LuaModules\ORM\Providers\IProvider.cs" />
-    <Compile Include="LuaModules\ORM\ITable.cs" />
+    <Compile Include="LuaModules\DatabaseModule.cs" />
     <Compile Include="LuaModules\TimerModule.cs" />
     <Compile Include="LuaScript.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -86,6 +83,12 @@
     <Content Include="README.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LuaConnector.ORM\LuaConnector.ORM.csproj">
+      <Project>{642eebd9-e99e-4488-83db-09510e0b48d4}</Project>
+      <Name>LuaConnector.ORM</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

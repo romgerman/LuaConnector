@@ -4,12 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LuaConnector.LuaModules.ORM.Providers
+namespace LuaConnector.ORM.Providers
 {
 	public interface IProvider
 	{
 		string Name { get; }
 
-		ITable GetTableByName(string name);
+		void Connect(string connectionString);
+		void Disconnect();
+
+		int ExecuteNonQuery(string query);
+
+		ITable Table(string name);
 	}
 }

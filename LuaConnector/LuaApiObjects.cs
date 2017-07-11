@@ -57,7 +57,7 @@ namespace LuaConnector
 			Target.Normalize();
 			return Target;
 		}
-
+		
 		public double DistanceTo(Vector3 v)
 		{
 			return Target.DistanceTo(v);
