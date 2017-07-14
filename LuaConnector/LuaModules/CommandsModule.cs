@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 using Server = GrandTheftMultiplayer.Server.Elements;
 
@@ -65,37 +66,54 @@ namespace LuaConnector.LuaModules
 			}
 		}
 
+		static SemaphoreSlim semaphore = new SemaphoreSlim(1);
+
 		public static bool Process(string command, Server.Client client)
 		{
+			if (command.Length == 1)
+				return true;
+
 			var args = command.SplitCmd();
 
-			foreach(var script in _commands)
+			try
 			{
-				foreach (var cmd in script.Value)
+				semaphore.Wait();
+
+				foreach (var script in _commands)
 				{
-					if (args[0].Equals(cmd.Key))
+					foreach (var cmd in script.Value)
 					{
+						if (!args[0].Equals(cmd.Key))
+							continue;
+
 						if (cmd.Value.ArgsAsArray)
 						{
 							if (args.Length > 1)
-								cmd.Value.Callback.Call(client, args.Skip(1).ToArray());
+								return IsCancelling(cmd.Value.Callback.Call(client, args.Skip(1).ToArray()));
 							else
-								cmd.Value.Callback.Call(client);
+								return IsCancelling(cmd.Value.Callback.Call(client));
 						}
 						else
 						{
 							if (args.Length > 1)
-								cmd.Value.Callback.Call(new object[] { client }.Concat(args.Skip(1)).ToArray());
+								return IsCancelling(cmd.Value.Callback.Call(new object[] { client }.Concat(args.Skip(1)).ToArray()));
 							else
-								cmd.Value.Callback.Call(client);
+								return IsCancelling(cmd.Value.Callback.Call(client));
 						}
-
-						return true;
 					}
 				}
 			}
+			finally
+			{
+				semaphore.Release();
+			}			
 
 			return false;
+		}
+
+		private static bool IsCancelling(Lua.DynValue ret)
+		{
+			return ret.IsNil() ? true : ret.Boolean;
 		}
 
 		public static void RemoveAllCommandsInScript(Lua.Script script)

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System.Reflection;
 using System.Reflection.Emit;
 
+#if !DISABLE_DB
+
 using LuaConnector.ORM;
 
 using Lua = MoonSharp.Interpreter;
@@ -37,3 +39,5 @@ namespace LuaConnector.LuaModules
 		}
 	}
 }
+
+#endif

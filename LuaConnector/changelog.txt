@@ -1,5 +1,7 @@
 ﻿
 =========================================================================
+- Fixed commands module throwing exception when there is no text after slash
+- Fixed api functions which accept NetHandle now accept Client object
 
 TODO:
 	- Freeroam script

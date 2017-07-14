@@ -13,6 +13,8 @@ namespace LuaConnector.Utilities
 		{
 			if (entity.UserData.Object.GetType().IsSubclassOf(typeof(Server.Elements.Entity)))
 				return ((Server.Elements.Entity)entity.ToObject()).handle;
+			if (entity.UserData.Object.GetType().Equals(typeof(Server.Elements.Client)))
+				return entity.ToClient().handle;
 
 			return entity.ToNetHandle();
 		}

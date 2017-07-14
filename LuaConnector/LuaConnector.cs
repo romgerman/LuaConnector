@@ -245,8 +245,12 @@ namespace LuaConnector
 		{
 			new ApiTable(this);
 
+#if !DISABLE_DB
+
 			Print(LogCat.Info, "Loading database providers...");
 			LuaModules.DatabaseModule.RegisterDatabaseProviders();
+
+#endif
 
 			string scriptsPath = API.getSetting<string>("folder");
 
